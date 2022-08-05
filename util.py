@@ -68,7 +68,7 @@ def openExcelFile(op):
 def initExcelFile(uN, uD, mode):
     # todo now YEAR=2022
     uD = '2022-'+uD
-    tl = getSunTime(uD)
+    # tl = getSunTime(uD)
     input_file = ""
     output_file = ""
     if mode == "AG":
@@ -84,11 +84,11 @@ def initExcelFile(uN, uD, mode):
     ws['A1'].value = '驗測日期：{}'.format(datetime.date.today())
     ws['A2'].value = '影片日期：{}'.format(uD)
     ws['A3'].value = '驗測人員：{}'.format(uN)
-    ws3 = wb["時段與氣候"]
-    ws3['B3'].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
-    ws3['B4'].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
-    ws3['B5'].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
-    ws3['B6'].value = ("2022-{}".format(tl[1])).replace("-", "/")
+    # ws3 = wb["時段與氣候"]
+    # ws3['B3'].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
+    # ws3['B4'].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
+    # ws3['B5'].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
+    # ws3['B6'].value = ("2022-{}".format(tl[1])).replace("-", "/")
     wb.save(output_file)
 
 

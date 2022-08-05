@@ -10,6 +10,7 @@ PO_excel = {
     "02": 'K',
     "11": 'P',
     "21": 'Z',
+    "22": 'U',
     "30": 'AY'
 }
 
@@ -31,17 +32,17 @@ def mariaDBtoExcelPO(date):
                 print("{} {} 查無資料".format(nvr, time_startListPO[timeStep]))
                 pass
             else:
+                ws, wb = openExcelFile(outputFilePO)
                 for df_row in range(len(df.index)):
                     row_type = df.iloc[df_row][1]
                     row_vol = df.iloc[df_row][2]
                     col = PO_excel[row_type]
                     cellID = col+str(nvr_row)
-                    ws, wb = openExcelFile(outputFilePO)
                     if ws[cellID].value != 0:
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
                         ws[cellID].value = row_vol
-                    wb.save(outputFilePO)
+                wb.save(outputFilePO)
             nvr_row += 1
         n += 1
     conn.close()

@@ -10,6 +10,7 @@ AG_excel = {
     "02": 'I',
     "11": 'N',
     "21": 'X',
+    "22": 'S',
     "30": 'AW'
 }
 
@@ -30,17 +31,17 @@ def mariaDBtoExcelAG(date):
                 print("{} {} 查無資料".format(nvr, ts))
                 pass
             else:
+                ws, wb = openExcelFile(outputFileAG)
                 for df_row in range(len(df.index)):
                     row_type = df.iloc[df_row][4]
                     row_vol = df.iloc[df_row][5]
                     col = AG_excel[row_type]
                     cellID = col+str(nvr_row)
-                    ws, wb = openExcelFile(outputFileAG)
                     if ws[cellID].value != 0:
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
                         ws[cellID].value = row_vol
-                    wb.save(outputFileAG)
+                wb.save(outputFileAG)
             nvr_row += 1
         n += 1
     conn.close()
