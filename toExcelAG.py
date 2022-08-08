@@ -18,6 +18,7 @@ AG_excel = {
 def mariaDBtoExcelAG(date):
     conn, cur = sqlConnect()
     n = 1
+    ws, wb = openExcelFile(outputFileAG)
     for nvr in cctvID_list:
         nvr_row = excelFileGroup*n - 5
         for ts in time_ListAG:
@@ -29,9 +30,14 @@ def mariaDBtoExcelAG(date):
             df = pd.DataFrame(fetch_data)
             if df.empty:
                 print("{} {} 查無資料".format(nvr, ts))
+                # sql = sql_checkAG.format(nvr)
+                # cur.execute(sql)
+                # fetch_data = cur.fetchall()
+                # df = pd.DataFrame(fetch_data)
+                # if df.empty:
+                #     print("{} {} 查無資料".format(nvr, ts))
                 pass
             else:
-                ws, wb = openExcelFile(outputFileAG)
                 for df_row in range(len(df.index)):
                     row_type = df.iloc[df_row][4]
                     row_vol = df.iloc[df_row][5]
@@ -41,9 +47,10 @@ def mariaDBtoExcelAG(date):
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
                         ws[cellID].value = row_vol
-                wb.save(outputFileAG)
+
             nvr_row += 1
         n += 1
+    wb.save(outputFileAG)
     conn.close()
 
 

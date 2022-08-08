@@ -17,6 +17,7 @@ PO_excel = {
 def mariaDBtoExcelPO(date):
     conn, cur = sqlConnect()
     n = 1
+    ws, wb = openExcelFile(outputFilePO)
     for nvr in cctvID_list:
         nvr_row = excelFileGroup*n - 5
         for timeStep in range(excelFileGroup):
@@ -32,7 +33,6 @@ def mariaDBtoExcelPO(date):
                 print("{} {} 查無資料".format(nvr, time_startListPO[timeStep]))
                 pass
             else:
-                ws, wb = openExcelFile(outputFilePO)
                 for df_row in range(len(df.index)):
                     row_type = df.iloc[df_row][1]
                     row_vol = df.iloc[df_row][2]
@@ -42,9 +42,9 @@ def mariaDBtoExcelPO(date):
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
                         ws[cellID].value = row_vol
-                wb.save(outputFilePO)
             nvr_row += 1
         n += 1
+    wb.save(outputFilePO)
     conn.close()
 
 

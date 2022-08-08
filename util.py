@@ -52,8 +52,9 @@ def catchError(e):
     lastCallStack = traceback.extract_tb(tb)
     fileName = lastCallStack[0]
     lineNum = lastCallStack[1]
-    funcName = lastCallStack[2]
-    errMsg = "File \"{}\", \nline {}, \nin {}: [{}] {}\n".format(fileName, lineNum, funcName, error_class, detail)
+    # funcName = lastCallStack[2]
+    # errMsg = "File \"{}\", \nline {}, \nin {}: [{}] {}\n".format(fileName, lineNum, funcName, error_class, detail)
+    errMsg = "File \"{}\", \nline {}, \n [{}] {}\n".format(fileName, lineNum, error_class, detail)
     print(errMsg)
     sys.exit(1)
 
