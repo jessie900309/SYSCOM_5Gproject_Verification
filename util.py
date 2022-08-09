@@ -21,27 +21,27 @@ def userInput(msg):
 
 
 def getSunTime(uD):
+    print("--------------- Call API --------------")
     lastDate = (datetime.datetime.strptime(uD, "%Y-%m-%d")-datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     nextDate = (datetime.datetime.strptime(uD, "%Y-%m-%d")+datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     url = BaseURL + sun_data_url
-    payload = {
-        'Authorization': "CWB-5FBB0B6F-E22D-423A-87B9-2719895FDAF9",
-        'limit': 1,
-        'format': "JSON",
-        'locationName': ["花蓮縣"],
-        'dataTime': [lastDate, uD, nextDate],
-    }
+    payload['dataTime'] = uD
     data = requests.get(url, params=payload)
     data_json = data.json()
     location = data_json['records']['locations']["location"][0] # 花蓮縣
+    todayDay = location['time'][0]['parameter'][0]['parameterValue'] # 當日 民用曙光始
+    todayDay = uD[5:] + " " + todayDay
+    todayNight = location['time'][0]['parameter'][7]['parameterValue'] # 當日 民用暮光終
+    todayNight = uD[5:] + " " + todayNight
+    data = requests.get(url, params=payload)
+    location = (data.json())['records']['locations']["location"][0]
     lastNight = location['time'][0]['parameter'][7]['parameterValue'] # 上一日 民用暮光終
     lastNight = lastDate[5:] + " " + lastNight
-    todayDay = location['time'][1]['parameter'][0]['parameterValue'] # 當日 民用曙光始
-    todayDay = uD[5:] + " " + todayDay
-    todayNight = location['time'][1]['parameter'][7]['parameterValue'] # 當日 民用暮光終
-    todayNight = uD[5:] + " " + todayNight
-    nextDay = location['time'][2]['parameter'][0]['parameterValue'] # 下一日 民用曙光始
+    data = requests.get(url, params=payload)
+    location = (data.json())['records']['locations']["location"][0]
+    nextDay = location['time'][0]['parameter'][0]['parameterValue'] # 下一日 民用曙光始
     nextDay = nextDate[5:] + " " + nextDay
+    print("------------ Get Time Line ------------")
     return lastNight, todayDay, todayNight, nextDay
 
 
@@ -69,7 +69,7 @@ def openExcelFile(op):
 def initExcelFile(uN, uD, mode):
     # todo now YEAR=2022
     uD = '2022-'+uD
-    # tl = getSunTime(uD)
+    tl = getSunTime(uD)
     input_file = ""
     output_file = ""
     if mode == "AG":
@@ -85,11 +85,11 @@ def initExcelFile(uN, uD, mode):
     ws['A1'].value = '驗測日期：{}'.format(datetime.date.today())
     ws['A2'].value = '影片日期：{}'.format(uD)
     ws['A3'].value = '驗測人員：{}'.format(uN)
-    # ws3 = wb["時段與氣候"]
-    # ws3['B3'].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
-    # ws3['B4'].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
-    # ws3['B5'].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
-    # ws3['B6'].value = ("2022-{}".format(tl[1])).replace("-", "/")
+    ws3 = wb["時段與氣候"]
+    ws3['B3'].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
+    ws3['B4'].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
+    ws3['B5'].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
+    ws3['B6'].value = ("2022-{}".format(tl[1])).replace("-", "/")
     wb.save(output_file)
 
 
