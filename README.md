@@ -1,6 +1,6 @@
-# syscom_mariaDBtoExcel
+# SYSCOM_5Gproject_mariaDBtoExcel
 
-###### tags: `syscom` `GitHub`
+###### tags: `SYSCOM` `GitHub`
 
 
 ### 執行
