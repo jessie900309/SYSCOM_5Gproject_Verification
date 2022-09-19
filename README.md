@@ -3,11 +3,15 @@
 ###### tags: `SYSCOM` `GitHub`
 
 
+
 ### 執行
-> mainAG.py (run車種辨識統計)
-> mainPO.py (run車種辨識)
-> mainSL.py (run停等)
+
+> `mainAG.py` (run車種辨識統計)
+> `mainPO.py` (run車種辨識)
+> `mainSL.py` (run停等)
 > [color=pink]
+
+
 
 ### 套件
 
@@ -15,12 +19,10 @@
 
 
 
-
 ### 檔案說明
 
 > shell `tree /f`
 > [color=orange]
-
 ```
 C:.
 │  constants.py (不重要的字串:3)
@@ -42,4 +44,3 @@ C:.
 └─output
        (匯出的檔案會在這裡)
 ```
-
