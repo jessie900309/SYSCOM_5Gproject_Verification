@@ -1,4 +1,4 @@
-# SYSCOM_5Gproject_mariaDBtoExcel
+# SYSCOM_5Gproject_Verification
 
 ###### tags: `SYSCOM` `GitHub`
 
