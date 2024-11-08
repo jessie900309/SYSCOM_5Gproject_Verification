@@ -22,24 +22,32 @@ def userInput(msg):
 
 def getSunTime(uD):
     print("--------------- Call API --------------")
-    lastDate = (datetime.datetime.strptime(uD, "%Y-%m-%d")-datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-    nextDate = (datetime.datetime.strptime(uD, "%Y-%m-%d")+datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    lastDate = (
+        datetime.datetime.strptime(uD, "%Y-%m-%d") - datetime.timedelta(days=1)
+    ).strftime("%Y-%m-%d")
+    nextDate = (
+        datetime.datetime.strptime(uD, "%Y-%m-%d") + datetime.timedelta(days=1)
+    ).strftime("%Y-%m-%d")
     url = BaseURL + sun_data_url
-    payload['dataTime'] = uD
+    payload["dataTime"] = uD
     data = requests.get(url, params=payload)
     data_json = data.json()
-    location = data_json['records']['locations']["location"][0] # 花蓮縣
-    todayDay = location['time'][0]['parameter'][0]['parameterValue'] # 當日 民用曙光始
+    location = data_json["records"]["locations"]["location"][0]  # 花蓮縣
+    todayDay = location["time"][0]["parameter"][0]["parameterValue"]  # 當日 民用曙光始
     todayDay = uD[5:] + " " + todayDay
-    todayNight = location['time'][0]['parameter'][7]['parameterValue'] # 當日 民用暮光終
+    todayNight = location["time"][0]["parameter"][7][
+        "parameterValue"
+    ]  # 當日 民用暮光終
     todayNight = uD[5:] + " " + todayNight
     data = requests.get(url, params=payload)
-    location = (data.json())['records']['locations']["location"][0]
-    lastNight = location['time'][0]['parameter'][7]['parameterValue'] # 上一日 民用暮光終
+    location = (data.json())["records"]["locations"]["location"][0]
+    lastNight = location["time"][0]["parameter"][7][
+        "parameterValue"
+    ]  # 上一日 民用暮光終
     lastNight = lastDate[5:] + " " + lastNight
     data = requests.get(url, params=payload)
-    location = (data.json())['records']['locations']["location"][0]
-    nextDay = location['time'][0]['parameter'][0]['parameterValue'] # 下一日 民用曙光始
+    location = (data.json())["records"]["locations"]["location"][0]
+    nextDay = location["time"][0]["parameter"][0]["parameterValue"]  # 下一日 民用曙光始
     nextDay = nextDate[5:] + " " + nextDay
     print("------------ Get Time Line ------------")
     return lastNight, todayDay, todayNight, nextDay
@@ -54,7 +62,9 @@ def catchError(e):
     lineNum = lastCallStack[1]
     # funcName = lastCallStack[2]
     # errMsg = "File \"{}\", \nline {}, \nin {}: [{}] {}\n".format(fileName, lineNum, funcName, error_class, detail)
-    errMsg = "File \"{}\", \nline {}, \n [{}] {}\n".format(fileName, lineNum, error_class, detail)
+    errMsg = 'File "{}", \nline {}, \n [{}] {}\n'.format(
+        fileName, lineNum, error_class, detail
+    )
     print(errMsg)
     sys.exit(1)
 
@@ -68,7 +78,7 @@ def openExcelFile(op):
 
 def initExcelFile(uN, uD, mode):
     # todo now YEAR=2022
-    uD = '2022-'+uD
+    uD = "2022-" + uD
     tl = getSunTime(uD)
     input_file = ""
     output_file = ""
@@ -82,15 +92,12 @@ def initExcelFile(uN, uD, mode):
         input_file = inputFileSL
         output_file = outputFileSL
     ws, wb = openExcelFile(input_file)
-    ws['A1'].value = '驗測日期：{}'.format(datetime.date.today())
-    ws['A2'].value = '影片日期：{}'.format(uD)
-    ws['A3'].value = '驗測人員：{}'.format(uN)
+    ws["A1"].value = "驗測日期：{}".format(datetime.date.today())
+    ws["A2"].value = "影片日期：{}".format(uD)
+    ws["A3"].value = "驗測人員：{}".format(uN)
     ws3 = wb["時段與氣候"]
-    ws3['B3'].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
-    ws3['B4'].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
-    ws3['B5'].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
-    ws3['B6'].value = ("2022-{}".format(tl[1])).replace("-", "/")
+    ws3["B3"].value = ("{} ~ {}".format(tl[0], tl[1])).replace("-", "/")
+    ws3["B4"].value = ("{} ~ {}".format(tl[1], tl[2])).replace("-", "/")
+    ws3["B5"].value = ("{} ~ {}".format(tl[2], tl[3])).replace("-", "/")
+    ws3["B6"].value = ("2022-{}".format(tl[1])).replace("-", "/")
     wb.save(output_file)
-
-
-

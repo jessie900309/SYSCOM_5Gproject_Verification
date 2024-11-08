@@ -6,20 +6,15 @@ from varible import *
 
 excelFileGroup = len(time_startListPO)
 
-PO_excel = {
-    "02": 'K',
-    "11": 'P',
-    "21": 'Z',
-    "22": 'U',
-    "30": 'AY'
-}
+PO_excel = {"02": "K", "11": "P", "21": "Z", "22": "U", "30": "AY"}
+
 
 def mariaDBtoExcelPO(date):
     conn, cur = sqlConnect()
     n = 1
     ws, wb = openExcelFile(outputFilePO)
     for nvr in cctvID_list:
-        nvr_row = excelFileGroup*n - 5
+        nvr_row = excelFileGroup * n - 5
         for timeStep in range(excelFileGroup):
             sql = "SET @TS = '2022-{} {}';".format(date, time_startListPO[timeStep])
             cur.execute(sql)
@@ -37,7 +32,7 @@ def mariaDBtoExcelPO(date):
                     row_type = df.iloc[df_row][1]
                     row_vol = df.iloc[df_row][2]
                     col = PO_excel[row_type]
-                    cellID = col+str(nvr_row)
+                    cellID = col + str(nvr_row)
                     if ws[cellID].value != 0:
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
@@ -46,8 +41,3 @@ def mariaDBtoExcelPO(date):
         n += 1
     wb.save(outputFilePO)
     conn.close()
-
-
-
-
-

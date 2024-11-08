@@ -16,6 +16,5 @@ def mainSL():
         catchError(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     mainSL()
-

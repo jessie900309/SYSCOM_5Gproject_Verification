@@ -6,13 +6,7 @@ from varible import *
 
 excelFileGroup = len(time_ListAG)
 
-AG_excel = {
-    "02": 'I',
-    "11": 'N',
-    "21": 'X',
-    "22": 'S',
-    "30": 'AW'
-}
+AG_excel = {"02": "I", "11": "N", "21": "X", "22": "S", "30": "AW"}
 
 
 def mariaDBtoExcelAG(date):
@@ -20,7 +14,7 @@ def mariaDBtoExcelAG(date):
     n = 1
     ws, wb = openExcelFile(outputFileAG)
     for nvr in cctvID_list:
-        nvr_row = excelFileGroup*n - 5
+        nvr_row = excelFileGroup * n - 5
         for ts in time_ListAG:
             sql = "SET @TS = '2022-{} {}';".format(date, ts)
             cur.execute(sql)
@@ -42,7 +36,7 @@ def mariaDBtoExcelAG(date):
                     row_type = df.iloc[df_row][4]
                     row_vol = df.iloc[df_row][5]
                     col = AG_excel[row_type]
-                    cellID = col+str(nvr_row)
+                    cellID = col + str(nvr_row)
                     if ws[cellID].value != 0:
                         ws[cellID].value = int(ws[cellID].value) + int(row_vol)
                     else:
@@ -52,8 +46,3 @@ def mariaDBtoExcelAG(date):
         n += 1
     wb.save(outputFileAG)
     conn.close()
-
-
-
-
-
